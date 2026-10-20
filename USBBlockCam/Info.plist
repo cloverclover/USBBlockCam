@@ -22,6 +22,19 @@
 	<string>1.0.0</string>
 	<key>IOKitPersonalities</key>
 	<dict>
+		<key>USBBlockCam Hub</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.opencode.usbblockcam</string>
+			<key>IOClass</key>
+			<string>USBBlockCamDevice</string>
+			<key>IOProbeScore</key>
+			<integer>2000000</integer>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>bDeviceClass</key>
+			<integer>9</integer>
+		</dict>
 		<key>USBBlockCam Device</key>
 		<dict>
 			<key>CFBundleIdentifier</key>
@@ -32,6 +45,21 @@
 			<integer>1000000</integer>
 			<key>IOProviderClass</key>
 			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>9322</integer>
+			<key>idVendor</key>
+			<integer>5967</integer>
+		</dict>
+		<key>USBBlockCam Legacy Device</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.opencode.usbblockcam</string>
+			<key>IOClass</key>
+			<string>USBBlockCamDevice</string>
+			<key>IOProbeScore</key>
+			<integer>2000000</integer>
+			<key>IOProviderClass</key>
+			<string>IOUSBDevice</string>
 			<key>idProduct</key>
 			<integer>9322</integer>
 			<key>idVendor</key>
