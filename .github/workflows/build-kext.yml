@@ -24,15 +24,17 @@ jobs:
         run: |
           codesign -s - --force USBBlockCam.kext
 
-      - name: Validate
+      - name: Validate and stage
         run: |
           set -e
           ls -laR USBBlockCam.kext
           plutil -lint USBBlockCam.kext/Contents/Info.plist
           file USBBlockCam.kext/Contents/MacOS/USBBlockCam
+          mkdir -p dist
+          cp -R USBBlockCam.kext dist/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: USBBlockCam-kext
-          path: USBBlockCam/USBBlockCam.kext
+          path: USBBlockCam/dist
