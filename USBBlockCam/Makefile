@@ -28,17 +28,20 @@ LDFLAGS = -target $(ARCH)-apple-macos$(MIN_MAC) \
 SRCS = USBBlockCamDevice.cpp USBBlockCamInterface.cpp
 OBJS = $(SRCS:.cpp=.o)
 
+KEXT = $(TARGET).kext
+BINARY = $(KEXT)/Contents/MacOS/$(TARGET)
+
 .PHONY: all clean
 
-all: $(TARGET).kext
+all: $(BINARY)
 
-$(TARGET).kext/Contents/MacOS/$(TARGET): $(OBJS)
-	@mkdir -p $(TARGET).kext/Contents/MacOS
+$(BINARY): $(OBJS)
+	@mkdir -p $(KEXT)/Contents/MacOS
 	$(CXX) $(LDFLAGS) -o $@ $(OBJS)
-	cp Info.plist $(TARGET).kext/Contents/Info.plist
+	cp Info.plist $(KEXT)/Contents/Info.plist
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(TARGET).kext $(OBJS)
+	rm -rf $(KEXT) $(OBJS)
