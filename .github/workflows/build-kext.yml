@@ -39,8 +39,8 @@ jobs:
           echo "--- kmod_info (REQUIRED by OC prelink) ---"
           nm "$BIN" | grep -i kmod || echo "NO kmod SYMBOL"
           nm -u "$BIN" | grep -i kmod && { echo "FAIL: kmod_info is undefined"; exit 1; } || true
-          echo "--- _start/_stop symbols ---"
-          nm "$BIN" | grep -E " _start$| _stop$" || echo "NO _start/_stop"
+          echo "--- _start/_stop must NOT be undefined ---"
+          nm -u "$BIN" | grep -E "_start$|_stop$" && { echo "FAIL: _start/_stop unresolved"; exit 1; } || true
           nm "$BIN" | grep -E "[A-Z] _kmod_info$" || { echo "FAIL: no DEFINED _kmod_info symbol - OC injection will fail"; exit 1; }
           echo "--- Undefined symbol count ---"
           nm -u "$BIN" | wc -l
