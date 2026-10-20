@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.opencode.usbblockcam</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>USBBlockCam</string>
+	<key>CFBundlePackageType</key>
+	<string>KEXT</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.0</string>
+	<key>IOKitPersonalities</key>
+	<dict>
+		<key>USBBlockCam Device</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.opencode.usbblockcam</string>
+			<key>IOClass</key>
+			<string>USBBlockCamDevice</string>
+			<key>IOProbeScore</key>
+			<integer>1000000</integer>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>9322</integer>
+			<key>idVendor</key>
+			<integer>5967</integer>
+		</dict>
+		<key>USBBlockCam Interface</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.opencode.usbblockcam</string>
+			<key>IOClass</key>
+			<string>USBBlockCamInterface</string>
+			<key>IOProbeScore</key>
+			<integer>1000000</integer>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostInterface</string>
+		</dict>
+	</dict>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.13</string>
+	<key>OSBundleCompatibleVersion</key>
+	<string>1.0.0</string>
+	<key>OSBundleLibraries</key>
+	<dict>
+		<key>com.apple.iokit.IOUSBHostFamily</key>
+		<string>1.2</string>
+		<key>com.apple.kpi.iokit</key>
+		<string>16.0.0</string>
+		<key>com.apple.kpi.libkern</key>
+		<string>16.0.0</string>
+		<key>com.apple.kpi.mach</key>
+		<string>16.0.0</string>
+		<key>com.apple.kpi.bsd</key>
+		<string>16.0.0</string>
+	</dict>
+	<key>OSBundleRequired</key>
+	<string>Root</string>
+</dict>
+</plist>

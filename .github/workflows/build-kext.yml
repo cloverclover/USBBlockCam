@@ -1,0 +1,52 @@
+name: Build USBBlockCam kext
+
+on:
+  push:
+    paths:
+      - 'USBBlockCam/**'
+      - '.github/workflows/build-kext.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    defaults:
+      run:
+        working-directory: USBBlockCam
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build kext (Release, x86_64, ad-hoc sign)
+        run: |
+          xcodebuild \
+            -project USBBlockCam.xcodeproj \
+            -scheme USBBlockCam \
+            -configuration Release \
+            -derivedDataPath build \
+            ARCHS=x86_64 \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGN_IDENTITY="-" \
+            build
+
+      - name: Validate and package
+        run: |
+          set -e
+          KEXT=$(find build -name "USBBlockCam.kext" -type d | head -1)
+          echo "Found kext: $KEXT"
+          ls -laR "$KEXT"
+          plutil -lint "$KEXT/Contents/Info.plist"
+          file "$KEXT/Contents/MacOS/USBBlockCam"
+          ditto -c -k --keepParent "$KEXT" USBBlockCam.kext.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: USBBlockCam-kext
+          path: USBBlockCam/USBBlockCam.kext.zip
