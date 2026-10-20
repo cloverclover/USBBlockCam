@@ -35,12 +35,12 @@ IOService * USBBlockCamDevice::probe(IOService * provider, SInt32 * score)
 
     if (score) *score += 1000000;
 
-    return super::probe(provider, score);
+    return IOUSBHostDevice::probe(provider, score);
 }
 
 bool USBBlockCamDevice::start(IOService * provider)
 {
-    if (!super::start(provider)) {
+    if (!IOUSBHostDevice::start(provider)) {
         LOG("start: super::start FAILED");
         return false;
     }
@@ -51,5 +51,5 @@ bool USBBlockCamDevice::start(IOService * provider)
 void USBBlockCamDevice::stop(IOService * provider)
 {
     LOG("stop");
-    super::stop(provider);
+    IOUSBHostDevice::stop(provider);
 }

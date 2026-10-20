@@ -38,12 +38,12 @@ IOService * USBBlockCamInterface::probe(IOService * provider, SInt32 * score)
 
     if (score) *score += 1000000;
 
-    return super::probe(provider, score);
+    return IOUSBHostInterface::probe(provider, score);
 }
 
 bool USBBlockCamInterface::start(IOService * provider)
 {
-    if (!super::start(provider)) return false;
+    if (!IOUSBHostInterface::start(provider)) return false;
     LOG("start: claimed, doing nothing (blocks UVC/CDC interface drivers)");
     return true;
 }
@@ -51,5 +51,5 @@ bool USBBlockCamInterface::start(IOService * provider)
 void USBBlockCamInterface::stop(IOService * provider)
 {
     LOG("stop");
-    super::stop(provider);
+    IOUSBHostInterface::stop(provider);
 }
