@@ -30,10 +30,25 @@ jobs:
           ls -laR USBBlockCam.kext
           plutil -lint USBBlockCam.kext/Contents/Info.plist
           file USBBlockCam.kext/Contents/MacOS/USBBlockCam
-          echo "--- kextutil dry-run (no load) ---"
-          kextutil -n -t USBBlockCam.kext || true
-          echo "--- otool arch ---"
-          otool -hv USBBlockCam.kext/Contents/MacOS/USBBlockCam | head -20
+          BIN=USBBlockCam.kext/Contents/MacOS/USBBlockCam
+          echo "--- Mach-O header ---"
+          otool -hv "$BIN"
+          echo "--- Undefined symbols (kext must have these for OC to resolve) ---"
+          nm -u "$BIN" || true
+          echo "--- Undefined symbol count ---"
+          nm -u "$BIN" | wc -l
+          echo "--- kmod_info symbol ---"
+          nm "$BIN" | grep -i kmod || echo "NO kmod SYMBOL"
+          echo "--- vtable symbols ---"
+          nm "$BIN" | grep "__ZTV" | head -20 || true
+          echo "--- Load commands / segments ---"
+          otool -l "$BIN" | grep -E "segname|cmd " || true
+          echo "--- LINKEDIT size ---"
+          otool -l "$BIN" | grep -A7 "__LINKEDIT" || echo "NO LINKEDIT SEGMENT"
+          echo "--- DYSYMTAB / SYMTAB ---"
+          otool -l "$BIN" | grep -E "LC_SYMTAB|LC_DYSYMTAB" || echo "NO SYMTAB/DYSYMTAB"
+          echo "--- Code signature ---"
+          codesign -dvv "$BIN" 2>&1 || true
           mkdir -p dist
           cp -R USBBlockCam.kext dist/
 
