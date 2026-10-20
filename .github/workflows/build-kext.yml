@@ -31,14 +31,19 @@ jobs:
           plutil -lint USBBlockCam.kext/Contents/Info.plist
           file USBBlockCam.kext/Contents/MacOS/USBBlockCam
           BIN=USBBlockCam.kext/Contents/MacOS/USBBlockCam
+          SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
+          echo "--- SDK kmod.h macro check ---"
+          grep -n "KMOD_EXPLICIT_DECL\|KMOD_INFO_VERSION" "$SDKROOT/usr/include/mach/kmod.h" || echo "NO SDK kmod.h?"
           echo "--- Mach-O header ---"
           otool -hv "$BIN"
-          echo "--- Undefined symbols (kext must have these for OC to resolve) ---"
-          nm -u "$BIN" || true
+          echo "--- kmod_info (REQUIRED by OC prelink) ---"
+          nm "$BIN" | grep -i kmod || echo "NO kmod SYMBOL"
+          nm -u "$BIN" | grep -i kmod && { echo "FAIL: kmod_info is undefined"; exit 1; } || true
+          echo "--- _start/_stop symbols ---"
+          nm "$BIN" | grep -E " _start$| _stop$" || echo "NO _start/_stop"
+          nm "$BIN" | grep -E "[A-Z] _kmod_info$" || { echo "FAIL: no DEFINED _kmod_info symbol - OC injection will fail"; exit 1; }
           echo "--- Undefined symbol count ---"
           nm -u "$BIN" | wc -l
-          echo "--- kmod_info symbol ---"
-          nm "$BIN" | grep -i kmod || echo "NO kmod SYMBOL"
           echo "--- vtable symbols ---"
           nm "$BIN" | grep "__ZTV" | head -20 || true
           echo "--- Load commands / segments ---"
