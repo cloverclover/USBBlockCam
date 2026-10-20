@@ -30,6 +30,10 @@ jobs:
           ls -laR USBBlockCam.kext
           plutil -lint USBBlockCam.kext/Contents/Info.plist
           file USBBlockCam.kext/Contents/MacOS/USBBlockCam
+          echo "--- kextutil dry-run (no load) ---"
+          kextutil -n -t USBBlockCam.kext || true
+          echo "--- otool arch ---"
+          otool -hv USBBlockCam.kext/Contents/MacOS/USBBlockCam | head -20
           mkdir -p dist
           cp -R USBBlockCam.kext dist/
 
