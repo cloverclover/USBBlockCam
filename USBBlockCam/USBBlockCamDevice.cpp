@@ -4,7 +4,7 @@
 
 #define LOG(fmt, ...) IOLog("USBBlockCamDevice: " fmt "\n", ##__VA_ARGS__)
 
-OSDefineMetaClassAndStructors(USBBlockCamDevice, IOUSBHostDevice)
+OSDefineMetaClassAndStructors(USBBlockCamDevice, IOService)
 
 static const uint16_t kTargetVendorID  = 0x174F;
 static const uint16_t kTargetProductID = 0x246A;
@@ -35,13 +35,13 @@ IOService * USBBlockCamDevice::probe(IOService * provider, SInt32 * score)
 
     if (score) *score += 1000000;
 
-    return IOUSBHostDevice::probe(provider, score);
+    return IOService::probe(provider, score);
 }
 
 bool USBBlockCamDevice::start(IOService * provider)
 {
-    if (!IOUSBHostDevice::start(provider)) {
-        LOG("start: super::start FAILED");
+    if (!IOService::start(provider)) {
+        LOG("start: IOService::start FAILED");
         return false;
     }
     LOG("start: claimed, doing NO composite/CDC setup");
@@ -51,5 +51,5 @@ bool USBBlockCamDevice::start(IOService * provider)
 void USBBlockCamDevice::stop(IOService * provider)
 {
     LOG("stop");
-    IOUSBHostDevice::stop(provider);
+    IOService::stop(provider);
 }

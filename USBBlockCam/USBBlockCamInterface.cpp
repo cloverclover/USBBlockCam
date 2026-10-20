@@ -4,7 +4,7 @@
 
 #define LOG(fmt, ...) IOLog("USBBlockCamInterface: " fmt "\n", ##__VA_ARGS__)
 
-OSDefineMetaClassAndStructors(USBBlockCamInterface, IOUSBHostInterface)
+OSDefineMetaClassAndStructors(USBBlockCamInterface, IOService)
 
 static const uint16_t kTargetVendorID  = 0x174F;
 static const uint16_t kTargetProductID = 0x246A;
@@ -38,12 +38,12 @@ IOService * USBBlockCamInterface::probe(IOService * provider, SInt32 * score)
 
     if (score) *score += 1000000;
 
-    return IOUSBHostInterface::probe(provider, score);
+    return IOService::probe(provider, score);
 }
 
 bool USBBlockCamInterface::start(IOService * provider)
 {
-    if (!IOUSBHostInterface::start(provider)) return false;
+    if (!IOService::start(provider)) return false;
     LOG("start: claimed, doing nothing (blocks UVC/CDC interface drivers)");
     return true;
 }
@@ -51,5 +51,5 @@ bool USBBlockCamInterface::start(IOService * provider)
 void USBBlockCamInterface::stop(IOService * provider)
 {
     LOG("stop");
-    IOUSBHostInterface::stop(provider);
+    IOService::stop(provider);
 }

@@ -2,9 +2,8 @@
 #define USB_BLOCK_CAM_INTERFACE_H
 
 #include <IOKit/IOService.h>
-#include <IOKit/usb/IOUSBHostInterface.h>
 
-class USBBlockCamInterface : public IOUSBHostInterface
+class USBBlockCamInterface : public IOService
 {
     OSDeclareDefaultStructors(USBBlockCamInterface)
 

@@ -2,9 +2,8 @@
 #define USB_BLOCK_CAM_DEVICE_H
 
 #include <IOKit/IOService.h>
-#include <IOKit/usb/IOUSBHostDevice.h>
 
-class USBBlockCamDevice : public IOUSBHostDevice
+class USBBlockCamDevice : public IOService
 {
     OSDeclareDefaultStructors(USBBlockCamDevice)
 
